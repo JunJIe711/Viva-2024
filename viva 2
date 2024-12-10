@@ -1,0 +1,164 @@
+package romans;
+import java.util.Arrays;
+import java.util.Scanner;
+import java.util.ArrayList;
+import java.util.List;
+
+public class Romans {
+    public static String generateInitials(String fullName){
+        String [] ignoreWords = {"bin","binti","a/l","a/p","al","ap","@"}; //ignored words
+        fullName = fullName.replaceAll("[^a-zA-Z\\s]"," ").trim();
+        //trim() is called to remove any leading or trailing spaces from the name.
+        String [] nameParts = fullName.split("\\s+"); //split by spaces
+        StringBuilder initials = new StringBuilder();
+        
+        //loop through the parts of the name
+        for(String part : nameParts){
+        if(Arrays.asList(ignoreWords).contains(part.toLowerCase())){
+            continue;
+        }
+        if(!part.isEmpty()){
+            initials.append(part.charAt(0));
+        }
+    }
+        return initials.toString().toUpperCase();
+    }
+    public static int convertArabics(String roman){
+        roman = roman.toUpperCase(); // to handle lowercase input
+        int[] romanValues = new int[roman.length()];
+        for(int i =0;i<roman.length();i++){
+            switch(roman.charAt(i)){
+                case 'I':
+                    romanValues[i]=1;
+                    break;
+                case 'V':
+                    romanValues[i]=5;
+                    break;
+                case 'X':
+                    romanValues[i]=10;
+                    break;
+                case'L':
+                    romanValues[i]=50;
+                    break;
+                case'C':
+                    romanValues[i]=100;
+                    break;
+                case'D':
+                    romanValues[i]=500;
+                    break;
+                case'M':
+                    romanValues[i]=1000;
+                    break;
+                default:
+                    return -1;//invalid Roman numeral
+                     }
+        }
+       //Convert Roman to Arabic by subtractive rule
+       int arabic=0;
+       for(int i=0; i<romanValues.length;i++){
+           if (i+1<romanValues.length && romanValues[i]<romanValues[i+1]){
+                arabic -= romanValues[i];
+                
+           }else{
+               arabic += romanValues[i];
+           }
+       }return arabic;
+    }
+    //Method to convert Arabic numeral to Roman numeral
+    public static String convertRomans(int arabic){
+        if(arabic<1 || arabic> 3999)//Out of range
+            return "Invalid statement";
+        String [] romanSymbols = {"M","CM","D","CD","C","XC","L","XL","X","IX","V","IV","I"};
+        int [] arabicValues = {1000,900,500,400,100,90,50,40,10,9,5,4,1};
+        StringBuilder roman = new StringBuilder();
+        for(int i =0;i< arabicValues.length;i++){
+            while(arabic>=arabicValues[i]){
+                roman.append(romanSymbols[i]);
+                arabic -= arabicValues[i];
+            }
+        }
+        return roman.toString();
+    }
+    public static void main(String[] args){
+        Scanner sc = new Scanner(System.in);
+        String fullName = sc.nextLine(); //enter the user's name
+        String initials = generateInitials(fullName);
+        double n = sc.nextDouble();
+        sc.nextLine();// to consume the newline after the number input
+        //create a liist to store the expressions
+        List<String> expressions = new ArrayList<>();
+        //collect all the expressions
+        for( int i =0;i< n; i++){
+            String expression = sc.nextLine();
+            expressions.add(expression);
+        }
+        int correct = 0;
+        System.out.println("Roman numeral test statements are sent in by " + initials + ", (" + fullName + ").");
+            System.out.println();
+        for(String expression : expressions){
+            //Extract part of the expression
+            String [] parts = expression.split(" ");
+            if(parts.length!=5){
+                System.out.println("Invalid Statement.");
+                continue;
+            }
+            String roman1 = parts[0].toUpperCase();
+            String operator = parts[1];
+            String roman2 = parts[2].toUpperCase();
+            String roman3 = parts[4].toUpperCase();
+            
+     
+            int arabic1 = convertArabics(roman1);
+            int arabic2 = convertArabics(roman2);
+            int arabic3 = convertArabics(roman3);
+            
+            
+            
+            if(arabic1 == -1 || arabic2 == -1 || arabic3 == -1||arabic1 <1 ||arabic1> 3999 ||arabic2 <1 ||arabic2> 3999||arabic3 <1 ||arabic3> 3999){
+                System.out.println("invalid Statement.");
+                continue;
+            }
+            int result =0;
+            switch(operator){
+                case "+":
+                    result = arabic1 + arabic2;
+                    break;
+                case "-":
+                    result = arabic1 - arabic2;
+                    break;
+                case "*":
+                    result = arabic1 *arabic2;
+                    break;
+                case "/":
+                    if(arabic2!=0)
+                    result = arabic1/arabic2;
+                    else{
+                        System.out.println("Invalid Statement");
+                        continue;}
+                    break;
+                case "%":
+                    result = arabic1 % arabic2;
+                    break;
+                case "^":
+                    result = (int) Math.pow(arabic1,arabic2);
+                    break;
+                default:
+                    System.out.println("Invalid Statement.");
+                    continue;
+            }
+            //Convert back result to Roman numeral
+            String expectedRoman =convertRomans(result);
+            if(roman3.equals(expectedRoman)){
+                System.out.println(arabic1+" "+operator+" "+arabic2+" = "+arabic3 +" is correct.");
+                correct++;
+            }else
+                System.out.println(arabic1+" "+operator +" "+arabic2+" = "+arabic3+" is wrong,as the answer should be "+ convertRomans(result) + ", which is "+ result+" in Arabic numeral form.");
+        }
+        //Output for the number of correct statement and percentage
+        System.out.println();
+        System.out.println("Number of Correct Statements ="+correct);
+        double percentage = (correct/n)*100;
+        System.out.printf("Percentage of Correct Statements =%.2f",percentage);
+        System.out.print("%");
+    }
+}
