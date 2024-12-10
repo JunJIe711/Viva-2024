@@ -79,13 +79,15 @@ public class Romans {
         }
         return roman.toString();
     }
+
+    
     public static void main(String[] args){
         Scanner sc = new Scanner(System.in);
         String fullName = sc.nextLine(); //enter the user's name
         String initials = generateInitials(fullName);
         double n = sc.nextDouble();
         sc.nextLine();// to consume the newline after the number input
-        //create a liist to store the expressions
+        //create a list to store the expressions
         List<String> expressions = new ArrayList<>();
         //collect all the expressions
         for( int i =0;i< n; i++){
@@ -103,7 +105,7 @@ public class Romans {
                 continue;
             }
             String roman1 = parts[0].toUpperCase();
-            String operator = parts[1];
+            String operator = parts[1].toUpperCase();
             String roman2 = parts[2].toUpperCase();
             String roman3 = parts[4].toUpperCase();
             
@@ -146,9 +148,13 @@ public class Romans {
                     System.out.println("Invalid Statement.");
                     continue;
             }
-            //Convert back result to Roman numeral
-            String expectedRoman =convertRomans(result);
-            if(roman3.equals(expectedRoman)){
+            if (result<-1){
+                System.out.println("Invalid Statement");
+                continue; }
+            
+            
+             
+             if(arabic3==result){
                 System.out.println(arabic1+" "+operator+" "+arabic2+" = "+arabic3 +" is correct.");
                 correct++;
             }else
@@ -158,7 +164,7 @@ public class Romans {
         System.out.println();
         System.out.println("Number of Correct Statements ="+correct);
         double percentage = (correct/n)*100;
-        System.out.printf("Percentage of Correct Statements =%.2f",percentage);
-        System.out.print("%");
+        System.out.printf("Percentage of Correct Statements =%.2f%%",percentage);
+        
     }
 }
