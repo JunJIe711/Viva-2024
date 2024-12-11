@@ -6,23 +6,29 @@ import java.util.List;//import list interface for using lists
 
 public class Romans {
     public static String generateInitials(String fullName){
+        
         String [] ignoreWords = {"bin","binti","a/l","a/p","al","ap","@"}; //ignored words
-        fullName = fullName.replaceAll("[^a-zA-Z\\s]"," ").trim();
+        String y = fullName;
+        for (int i = 0;i < ignoreWords.length; i++){
+            if (fullName.contains(ignoreWords[i]))
+                y = y.replace(ignoreWords[i], "");
+        }
+        fullName = y.replaceAll("[^a-zA-Z\\s,]"," ");
         //trim() is called to remove any leading or trailing spaces from the name.
+        
         String [] nameParts = fullName.split("\\s+"); //split by spaces
         ////declare and initializing the StringBuilder,after that, you can append or modify strings
         StringBuilder initials = new StringBuilder();
         
         //loop through the parts of the name
         for(String part : nameParts){
-        if(Arrays.asList(ignoreWords).contains(part.toLowerCase())){
-            continue;
-        }
-        if(!part.isEmpty()){
-            initials.append(part.charAt(0));//get the first character by part
-        }
+            if(!part.isEmpty()){
+                initials.append(part.charAt(0));//get the first character by part
+            }
     }
+        
         return initials.toString().toUpperCase();
+            
         /*initials.toString() converts the StringBuilder containing the initials 
         (e.g., "LJJ") into a regular string, like "LJJ".*/
     }
@@ -104,7 +110,7 @@ public class Romans {
             expressions.add(expression);
         }
         int correct = 0;
-        System.out.println("Roman numeral test statements are sent in by " + initials + ", (" + fullName + ").");
+        System.out.println("Roman numeral test statements are sent in by " + initials + " (" + fullName + ").");
             System.out.println();
         for(String expression : expressions){
             //Extract part of the expression
