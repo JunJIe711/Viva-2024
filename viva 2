@@ -1,8 +1,8 @@
 package romans;
-import java.util.Arrays;
+import java.util.Arrays;//import arrays utility class for array manipulation
 import java.util.Scanner;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.ArrayList; //import ArrayList class to use dynamic arrays
+import java.util.List;//import list interface for using lists
 
 public class Romans {
     public static String generateInitials(String fullName){
@@ -10,6 +10,7 @@ public class Romans {
         fullName = fullName.replaceAll("[^a-zA-Z\\s]"," ").trim();
         //trim() is called to remove any leading or trailing spaces from the name.
         String [] nameParts = fullName.split("\\s+"); //split by spaces
+        ////declare and initializing the StringBuilder,after that, you can append or modify strings
         StringBuilder initials = new StringBuilder();
         
         //loop through the parts of the name
@@ -18,10 +19,12 @@ public class Romans {
             continue;
         }
         if(!part.isEmpty()){
-            initials.append(part.charAt(0));
+            initials.append(part.charAt(0));//get the first character by part
         }
     }
         return initials.toString().toUpperCase();
+        /*initials.toString() converts the StringBuilder containing the initials 
+        (e.g., "LJJ") into a regular string, like "LJJ".*/
     }
     public static int convertArabics(String roman){
         roman = roman.toUpperCase(); // to handle lowercase input
@@ -55,14 +58,16 @@ public class Romans {
         }
        //Convert Roman to Arabic by subtractive rule
        int arabic=0;
+       //Loop through the Roman values array
        for(int i=0; i<romanValues.length;i++){
+           //if the current Roman numeral is smaller than the next one, subtract the current value.
            if (i+1<romanValues.length && romanValues[i]<romanValues[i+1]){
-                arabic -= romanValues[i];
-                
+                arabic -= romanValues[i];    
            }else{
+               //Otherwise, add the current value to the Arabic total.
                arabic += romanValues[i];
            }
-       }return arabic;
+       }return arabic;//return the final Arabic number
     }
     //Method to convert Arabic numeral to Roman numeral
     public static String convertRomans(int arabic){
@@ -71,13 +76,17 @@ public class Romans {
         String [] romanSymbols = {"M","CM","D","CD","C","XC","L","XL","X","IX","V","IV","I"};
         int [] arabicValues = {1000,900,500,400,100,90,50,40,10,9,5,4,1};
         StringBuilder roman = new StringBuilder();
+        //Loop through each Arabic value
         for(int i =0;i< arabicValues.length;i++){
+            //while the Arabic number is greater than or equal to the current Arabic
             while(arabic>=arabicValues[i]){
+                //Append the corresponding Roman symbol to the result.
                 roman.append(romanSymbols[i]);
+                //subtract the Arabic value from the input number
                 arabic -= arabicValues[i];
             }
         }
-        return roman.toString();
+        return roman.toString();//return the final Roman numeral as a String
     }
 
     
@@ -109,7 +118,7 @@ public class Romans {
             String roman2 = parts[2].toUpperCase();
             String roman3 = parts[4].toUpperCase();
             
-     
+            //convert the Roman numerals to Arabic numbers.
             int arabic1 = convertArabics(roman1);
             int arabic2 = convertArabics(roman2);
             int arabic3 = convertArabics(roman3);
@@ -153,7 +162,7 @@ public class Romans {
                 continue; }
             
             
-             
+             //check if the result matches the expected answer
              if(arabic3==result){
                 System.out.println(arabic1+" "+operator+" "+arabic2+" = "+arabic3 +" is correct.");
                 correct++;
