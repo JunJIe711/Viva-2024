@@ -157,7 +157,7 @@ public class Romans {
                     System.out.println("Invalid Statement.");
                     continue;
             }
-            if (result<-1){
+            if (result<1){
                 System.out.println("Invalid Statement");
                 continue; }
             
